@@ -1,7 +1,15 @@
 # go-practice
-practice for golang
 
+Practice in Golang.
+
+Here are some useful golang code snippet for real working.
+
+## Practice list
+
+- [x] middleware for web service. middleware is very useful tools for logging, timing for api.
 
 ## TODO list
 
-  - [ ] build environment in docker: cgo dependence, dockerfile, ...
+- [ ] build environment in docker: cgo dependence, dockerfile, ...
+- [ ] retry function
+- [ ] gRPC vs HTTP restful
