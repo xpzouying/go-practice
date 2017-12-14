@@ -1,0 +1,13 @@
+syntax = "proto3";
+package main;
+
+message Student {
+    string name = 1;  // Student name
+    int32 age = 2;
+    string description = 3;
+}
+
+message Response {
+    bool success = 1;
+    string message = 2;
+}
