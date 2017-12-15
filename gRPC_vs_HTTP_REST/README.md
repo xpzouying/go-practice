@@ -1,38 +1,37 @@
-# gRPC vs HTTP RESTFul
+# Message encode and decode in HTTP service
 
-In these example, we will compare web service in these part,
+In these example, we will compare message encode and decode in HTTP web service.
 
-1. message encode/decode
-1. gRPC vs. HTTP RESTFul
+1. message encode/decode (Part. I)
+    - gob
+    - json
+    - msgpack
+    - protobuf
+1. gRPC vs. HTTP RESTFul (Part. II)
+    - gRPC
+    - HTTP service
 
-I take these comparation,
+## Result in testing
 
-- Message encode/decode comparation: json vs. gob vs. msgpack vs. protobuf
-- gRPC vs. HTTP RESTFul
+### TL;DR
+
+| Encode/Decode Tools | Count of loop | Time used all | Time used for single |
+|---|---|---|---|
+| JSON | 200000 | 1.638s | 7643 ns/op |
+| GOB | 20000 | 1.886s | 60853 ns/op |
+| msgpack | 200000 | 1.579s | 7389 ns/op |
+| protobuf | 300000 | 2.489s | 4755 ns/op |
+
+In my testing, `protobuf` is the fastest, but need preprocess. 1. create proto file; 2. compile protfo file to target language.
+
+`protobuf` is also not for human reading, if you want read the message after encoded, like in browser display, `json` is a better choose.
 
 ## Message encode/decode
 
-To test code in golang, we have two way.
+Two test way in golang,
 
-1. normal unittest
-1. benchmark test
-
-For normal unittest, we just run
-```bash
-go test -v
-```
-Go testing not run benchmark in default,
-
-We need run the testcase with `-test.bench`.
-
-```bash
-go test -test.bench=".*"
-```
-OR
-```bash
-go test -bench=.
-```
-The benchmark result is following,
+1. normal unittest: `go test`
+1. benchmark test: `go test -bench`
 
 ### HTTP + JSON
 
