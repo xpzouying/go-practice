@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package main;
+
+service Server1 {
+    // API1 is api for service
+    rpc API1 (Student) returns (Response) {}
+}
+
+message Student {
+    string name = 1;  // Student name
+    int32 age = 2;
+    string description = 3;
+}
+
+message Response {
+    bool success = 1;
+    string message = 2;
+}
