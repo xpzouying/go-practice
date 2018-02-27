@@ -8,6 +8,7 @@ Here are some useful golang code snippet for real working.
 
 - [x] middleware for web service. middleware is very useful tools for logging, timing for api.
 - [x] json vs gob vs msgpack vs protobuf in web service
+- [x] do something in time window
 
 ## TODO list
 
