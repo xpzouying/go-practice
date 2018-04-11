@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"io/ioutil"
 	"testing"
 
 	"github.com/rs/zerolog"
@@ -11,10 +11,10 @@ import (
 	"go.uber.org/zap"
 )
 
-func BenchmarkLogrus(b *testing.B) {
+func BenchmarkLogrusDefaultConfig(b *testing.B) {
 	logger := logrus.New()
 
-	f, err := os.OpenFile("logrus.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
+	f, err := ioutil.TempFile("", "logrus_log")
 	assert.NoError(b, err)
 	defer f.Close()
 	logger.Out = f
@@ -26,8 +26,43 @@ func BenchmarkLogrus(b *testing.B) {
 	}
 }
 
+func BenchmarkLogrusDisable(b *testing.B) {
+	f, err := ioutil.TempFile("", "logrus_log")
+	assert.NoError(b, err)
+	defer f.Close()
+
+	logger := logrus.New()
+	logger.Formatter = &logrus.TextFormatter{
+		DisableColors:  true,
+		FullTimestamp:  true,
+		DisableSorting: true,
+	}
+	logger.Out = f
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s := fmt.Sprintf("%s, %d", logStr, i)
+		logger.Infof(s)
+	}
+}
+
+func BenchmarkLogrusWithField(b *testing.B) {
+	logger := logrus.New()
+
+	f, err := ioutil.TempFile("", "logrus_log")
+	assert.NoError(b, err)
+	defer f.Close()
+	logger.Out = f
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s := fmt.Sprintf("%s, %d", logStr, i)
+		logger.WithField("key", "value").Infof(s)
+	}
+}
+
 func BenchmarkZerolog(b *testing.B) {
-	f, err := os.OpenFile("zero-log.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
+	f, err := ioutil.TempFile("", "zero_log")
 	assert.NoError(b, err)
 	defer f.Close()
 
