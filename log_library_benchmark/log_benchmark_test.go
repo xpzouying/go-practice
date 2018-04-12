@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"testing"
@@ -24,6 +25,24 @@ func BenchmarkLogrusDefaultConfig(b *testing.B) {
 		s := fmt.Sprintf("%s, %d", logStr, i)
 		logger.Infof(s)
 	}
+}
+
+func BenchmarkLogrusDefaultConfigWithBufio(b *testing.B) {
+	logger := logrus.New()
+
+	f, err := ioutil.TempFile("", "logrus_log")
+	assert.NoError(b, err)
+	defer f.Close()
+
+	cacheOut := bufio.NewWriter(f)
+	logger.Out = cacheOut
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s := fmt.Sprintf("%s, %d", logStr, i)
+		logger.Infof(s)
+	}
+	assert.NoError(b, cacheOut.Flush())
 }
 
 func BenchmarkLogrusDisable(b *testing.B) {
@@ -73,6 +92,23 @@ func BenchmarkZerolog(b *testing.B) {
 		s := fmt.Sprintf("%s, %d", logStr, i)
 		logger.Info().Msg(s)
 	}
+}
+
+func BenchmarkZerologWithBufio(b *testing.B) {
+	f, err := ioutil.TempFile("", "zero_log")
+	assert.NoError(b, err)
+	defer f.Close()
+
+	cacheOut := bufio.NewWriterSize(f, 102400)
+
+	logger := zerolog.New(cacheOut)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s := fmt.Sprintf("%s, %d", logStr, i)
+		logger.Info().Msg(s)
+	}
+	assert.NoError(b, cacheOut.Flush())
 }
 
 func BenchmarkUberZap(b *testing.B) {
