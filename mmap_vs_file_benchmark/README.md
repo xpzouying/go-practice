@@ -11,12 +11,13 @@ go test -bench=. -v . -benchmem
 ```
 goos: darwin
 goarch: amd64
+pkg: github.com/xpzouying/go-practice/mmap_vs_file_benchmark
 BenchmarkMMap
-BenchmarkMMap-4            42883             25398 ns/op             360 B/op          5 allocs/op
+BenchmarkMMap-4       	153527704	         7.93 ns/op	       0 B/op	       0 allocs/op
 BenchmarkFileOpen
-BenchmarkFileOpen-4        82740             15660 ns/op             120 B/op          3 allocs/op
+BenchmarkFileOpen-4   	 1232979	       983 ns/op	       0 B/op	       0 allocs/op
 PASS
-ok      _/Users/zy/src/GOPATH/src/github.com/xpzouying/go-practice/mmap_vs_file_benchmark       4.853s
+ok  	github.com/xpzouying/go-practice/mmap_vs_file_benchmark	4.582s
 ```
 
 ## mmap
