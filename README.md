@@ -15,3 +15,5 @@ Here are some useful golang code snippet for real working.
 - [ ] build environment in docker: cgo dependence, dockerfile, ...
 - [ ] retry function
 - [ ] gRPC vs HTTP restful
+- [ ] add milvus
+- [ ] add serve react web
