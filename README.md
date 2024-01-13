@@ -17,3 +17,5 @@ Here are some useful golang code snippet for real working.
 - [ ] gRPC vs HTTP restful
 - [ ] add milvus
 - [ ] add serve react web
+- [ ] go template for clean code:
+  - [ ] auth check
